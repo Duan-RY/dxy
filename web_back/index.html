@@ -151,15 +151,17 @@
                 })
             })
             // 页面加载功能
-        $.ajax({
-            url: USER_INFO_GET,
-            success: function(res) {
+        user.getAllInfo({
+            callback: function(res) {
                 if (res.code === 200) {
                     var data = res.data;
+                    // 左侧
                     $('.user_info img').prop('src', data.user_pic).next().text(data.nickname)
+                        // 右侧
                     $('.user_center_link img').prop('src', data.user_pic)
                 }
             }
+
         })
     </script>
 </body>
