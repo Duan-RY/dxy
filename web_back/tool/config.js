@@ -8,3 +8,8 @@ var USER_LOGOUT = baseUrl + '/admin/logout'; //退出登录
 var USER_INFO = baseUrl + '/admin/getuser'; //获取用户信息
 var USER_INFO_GET = baseUrl + '/admin/userinfo_get'; // 用户详细信息获取接口
 var USER_INFO_EDIT = baseUrl + '/admin/userinfo_edit'; // 用户信息编辑接口
+
+var ARTICLE_GET = baseUrl + '/admin/category_search'; //文章类别搜索
+var ARTICLE_ADD = baseUrl + '/admin/category_add'; //新增文章类别
+var ARTICLE_EDIT = baseUrl + '/admin/category_edit'; //编辑文章类别
+var ARTICLE_DEL = baseUrl + '/admin/category_delete'; //删除文章类别
