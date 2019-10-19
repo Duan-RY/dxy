@@ -279,6 +279,7 @@
     <!-- 引入文件 -->
     <script src="./tool/config.js"></script>
     <script src="./js/tinymce/template-web.js"></script>
+    <script src="./js/tinymce/js/jquery.twbsPagination.js"></script>
 
     <!-- 内容模板 -->
     <script type="text/html" id="article">
@@ -306,6 +307,9 @@
 
 
     <script>
+        var myTotalPage; // 用来保存当前的总页数，无需设置初始值，因为不知道到底有多少页
+        var myPage = 1; // 用来保存当前页码
+        var totalPages = res.totalPage; // 响应的属性名为totalPage，没有s
         function getArticle() {
             $.ajax({
                 type: 'get',
@@ -339,6 +343,46 @@
         $('#btnSearch').on('click', function(a) {
             a.preventDefault();
             getArticle();
+        });
+
+
+
+        // 下面没用，当看不见。。
+        // 3.2 检测当前页数和上一次的页数是否一致，如果一致，无需进行重新创建
+        //   - 可以通过全局变量保存每次的页数，方便请求中进行检测
+        window.onloade = function() {
+            if (totalPages === myTotalPage) {
+                // - 如果上一次和当前的总页数一致，同时上一次又点击了除1以外的其他页码
+                //   - 会导致页码无法更新为1，所以就不进行改进了
+                return;
+            }
+        }
+
+        //  - 如果页数不同，将当前的最新页号设置给全局变量myTotalPage保存
+        myTotalPage = totalPages;
+
+        // 3.3 根据总页数和其他选项设置分页功能
+        //   - 先删除旧的，再设置新的
+        $('.pagination').twbsPagination('destroy');
+        $('.pagination').twbsPagination({
+            totalPages: totalPages, // 总页数
+            visiblePages: 5,
+            first: '首页',
+            last: '尾页',
+            prev: '上一页',
+            next: '下一页',
+            onPageClick: function(event, page) {
+                // page代表当前点击的页码，数值类型
+                // console.log(page);
+
+                // 如果希望获取服务端与page对应页的数据，需要给请求多设置page参数
+                //   - 除了参数以外，其他的请求操作没有区别，直接调用当前函数即可
+                //   - 如果希望page可以在外面的请求操作中可以获取，应当设置为全局变量
+                myPage = page;
+                getArticle();
+            }
+
+
         });
     </script>
 </body>
